@@ -3,7 +3,7 @@
         <img src="{{recipe.imgPath}}"
         alt="{{recipe.name}}"
         class="img-responsive"
-        style="height:300px;width:450px;">
+        style="height:400px ;min-width:100%;">
     </div>
 </div>
 <hr>
@@ -44,7 +44,9 @@
                     (click)="onEditRecipe()">Edit Recipe</a>
                 </li>
                 <li>
-                    <a style="cursor: pointer;">Delete Recipe</a>
+                    <a 
+                    style="cursor: pointer;"
+                    (click)="onDeleteRecipe()">Delete Recipe</a>
                 </li>
             </ul>
         </div>

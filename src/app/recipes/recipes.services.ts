@@ -2,8 +2,11 @@ import { EventEmitter, Injectable } from '@angular/core';
 import{Recipe} from './recipes.model';
 import{Ingredient} from '../shared/ingredients.model';
 import { ShoppingListServices } from '../shopping-list/shopping-list.services';
+import { Subject } from 'rxjs';
 @Injectable()
 export class RecipesServices{
+    recipesChanged = new Subject<Recipe[]>();
+
     private recipes: Recipe[]=[
         new Recipe('Karbonara',
         'Pasta sa belim lukom, jajima i slaninom',
@@ -35,10 +38,9 @@ export class RecipesServices{
       
       getRecipes(){
           return this.recipes.slice();
-          
       }
 
-      recipeSelected=new EventEmitter<Recipe>();
+      recipeSelected=new Subject<Recipe>();
 
       addIngredientsToShoppingList(ing:Ingredient[]){
         this.slService.addIngredients(ing);
@@ -46,5 +48,22 @@ export class RecipesServices{
       
       getRecipeById(index:number){
           return this.recipes[index];
+      }
+
+      //Forma
+      addRecipe(recipe:Recipe){
+        this.recipes.push(recipe);
+        //Kada dodje do promene 
+        this.recipesChanged.next(this.recipes.slice());
+      }
+      //Form Edit Exiting Recipe
+      updateRecipes(index:number,newRecipe:Recipe){
+        this.recipes[index]=newRecipe;
+        this.recipesChanged.next(this.recipes.slice());
+      }
+
+      deleteRecipes(index:number){
+        this.recipes.splice(index, 1);
+        this.recipesChanged.next(this.recipes.slice());
       }
 }
